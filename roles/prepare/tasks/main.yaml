@@ -1,10 +1,9 @@
-# 停止防火墙
-- name: stop firewalld
-  service: name=firewalld state=stop
-
 # 禁用防火墙
 - name: disable firewalld
-  service: name=firewalld state=disabled
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
 
 # 临时关闭 selinux
 - name: close selinux moment
@@ -18,7 +17,7 @@
     line: "SELINUX=disabled"
 
 # 禁用 swap
-- name: 禁用系统 swap
+- name: disable swap
   shell: "swapoff -a && sysctl -w vm.swappiness=0"
   ignore_errors: true
 
