@@ -1,0 +1,12 @@
+- hosts:
+  - docker
+  roles:
+  - { role: docker, when: groups['docker']|length>0 }
+
+
+- hosts:
+  - nginx
+  roles: 
+  - { role: nginx, when: groups['docker']|length>0 }
+
+    

@@ -1,0 +1,32 @@
+# 停止防火墙
+- name: stop firewalld
+  service: name=firewalld state=stop
+
+# 禁用防火墙
+- name: disable firewalld
+  service: name=firewalld state=disabled
+
+# 临时关闭 selinux
+- name: close selinux moment
+  shell: "setenforce 0"
+
+# 永久关闭 selinux
+- name: close selinux forever
+  lineinfile:
+    dest: /etc/selinux/config
+    regexp: "^SELINUX="
+    line: "SELINUX=disabled"
+
+# 禁用 swap
+- name: 禁用系统 swap
+  shell: "swapoff -a && sysctl -w vm.swappiness=0"
+  ignore_errors: true
+
+# 删除swap 分区设置
+- name:  delete fstab swap config
+  lineinfile:
+    path: /etc/fstab
+    regexp: 'swap'
+    state: absent
+    backup: 'yes'
+
